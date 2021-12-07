@@ -24,15 +24,23 @@ func main() {
 	// go channels.ProduceSum(first, second, ch)
 	// fmt.Printf("The sum of %d, %d is: %d\n", first, second, <-ch)
 
-	// -------- 2. With range
-	nums := []int{2, 4, 5, 8, 77, 32, 35, 98, 99, 100}
-	ch := make(chan int, len(nums)) // creates a buffered channel by specifhing channel capacity
-	channels.ProduceEvenNums(nums, ch)
+	// // -------- 2. With range
+	// nums := []int{2, 4, 5, 8, 77, 32, 35, 98, 99, 100}
+	// ch := make(chan int, len(nums)) // creates a buffered channel by specifhing channel capacity
+	// channels.ProduceEvenNums(nums, ch)
 
-	// for loop with range on a channel breaks itself
-	// when sender closes the channel.
-	for num := range ch {
-		fmt.Println(num)
-	}
+	// // for loop with range on a channel breaks itself
+	// // when sender closes the channel.
+	// for num := range ch {
+	// 	fmt.Println(num)
+	// }
+
+	// -------- 3. sender only and receiver only channels
+	ch := make(chan string)
+	go channels.Ping("Hi Buddy!", ch)
+
+	ch2 := make(chan string)
+	go channels.Pong(ch, ch2)
+	fmt.Println(<-ch2)
 
 }
